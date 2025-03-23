@@ -1,0 +1,8 @@
+app/.venv/
+app/.idea/
+.ipynb_checkpoints/
+model_lora/
+student_model_even/
+student_model_odd/
+splitted_datasets/
+tokenized_datasets/

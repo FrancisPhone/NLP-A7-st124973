@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toxic Text Classifier</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for scrollable history */
+        .history-container {
+            max-height: 300px; /* Set a fixed height for the history container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #cbd5e0 #f3f4f6; /* For Firefox */
+        }
+
+        /* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+        .history-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .history-container::-webkit-scrollbar-track {
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+
+        .history-container::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+
+        .history-container::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <h1 class="text-2xl font-bold mb-6 text-center">Toxic Text Classifier</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <textarea
+                name="user_input"
+                class="w-full p-3 border border-gray-300 rounded-lg mb-4"
+                placeholder="Enter text to classify..."
+                rows="4"
+            ></textarea>
+            <div class="flex items-center mb-4">
+                <label for="model_type" class="mr-2">Select Model:</label>
+                <select
+                    name="model_type"
+                    id="model_type"
+                    class="p-2 border border-gray-300 rounded-lg"
+                >
+                    <option value="even">Even Model</option>
+                    <option value="odd">Odd Model</option>
+                    <option value="lora">LoRA Model</option>
+                </select>
+            </div>
+            <button
+                type="submit"
+                class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+            >
+                Classify
+            </button>
+        </form>
+        {% if result %}
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                <h2 class="text-lg font-semibold">Result:</h2>
+                <p class="mt-2 text-gray-700">{{ result }}</p>
+            </div>
+        {% endif %}
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold mb-4">Classification History</h2>
+            <div class="history-container space-y-4 p-2">
+                {% for entry in history %}
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <p class="text-gray-700"><strong>Text:</strong> {{ entry.text }}</p>
+                        <p class="text-gray-700"><strong>Result:</strong> {{ entry.result }}</p>
+                        <p class="text-gray-700"><strong>Model:</strong> {{ entry.model_type }}</p>
+                        <p class="text-gray-500 text-sm">{{ entry.created_at }}</p>
+                    </div>
+                {% empty %}
+                    <p class="text-gray-500">No history yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
