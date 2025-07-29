@@ -1,5 +1,3 @@
-# NLP-A7-st124973
-
 # Toxic Text Classifier
 
 A web application built with Django that classifies whether a given text input is toxic or non-toxic. Users can select between three models (Even, Odd, and LoRA) for classification. The application also displays a scrollable history of past classifications.
